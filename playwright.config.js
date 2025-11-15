@@ -1,57 +1,41 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: 1,
-  workers: 1,
-  reporter: 'html',
+  retries: process.env.CI ? 2 : 1,
+  workers: process.env.CI ? 2 : 1,
+  reporter: process.env.CI ? "html" : "line",
   use: {
-    baseURL: process.env.SEP_API_BASE_URL,
-    trace: 'on-first-retry',
-    headless: false,
+    baseURL: process.env.SEP_QA_URL || "https://qa.sep.tdtm.cydeo.com/taws",
+    headless: !!process.env.CI,
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
   },
 
   projects: [
-
     {
-      name: 'Google Chrome',
+      name: "Google Chrome",
       use: {
-        ...devices['Desktop Chrome'], 
-        channel: 'chrome',
-        viewport: { width: 1800, height: 1000 }, // simulate max window
-      },
-    },
-
-/*
-
-  {
-      name: 'chromium',
-      use: { 
-        ...devices['Desktop Chrome'],
-        viewport: {width: 1900, height: 1080} 
-      },
-    },
-    
-    {
-      name: 'firefox',
-      use: {
-        ...devices['Desktop Firefox'],
+        ...devices["Desktop Chrome"],
+        channel: "chrome",
         viewport: { width: 1800, height: 1000 },
       },
     },
 
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-        viewport: { width: 1800, height: 1000 },
-      },
-    },
-*/
+    // Uncomment when you want true cross-browser coverage:
+    // {
+    //   name: 'Firefox',
+    //   use: { ...devices['Desktop Firefox'], viewport: { width: 1800, height: 1000 } },
+    // },
+    // {
+    //   name: 'WebKit',
+    //   use: { ...devices['Desktop Safari'], viewport: { width: 1800, height: 1000 } },
+    // },
 
-/* Test against mobile viewports. */
+    /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
     //   use: { ...devices['Pixel 5'] },
@@ -60,7 +44,5 @@ export default defineConfig({
     //   name: 'Mobile Safari',
     //   use: { ...devices['iPhone 12'] },
     // },
-
-    
   ],
 });
