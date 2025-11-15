@@ -1,17 +1,24 @@
 {
-  "name": "sep-automation--tdd",
+  "name": "playwright-js-tdd-framework",
   "version": "1.0.0",
-  "description": "Certainly! I'll create a detailed README file for your SEP Automation TDD Framework, following a similar format to the one you provided. Here's the README:",
+  "description": "A JavaScript Playwright automation framework using Test-Driven Development (TDD). Includes runnable end-to-end tests, reusable Page Objects, and a clean project architecture.",
   "main": "index.js",
   "scripts": {
-    "tests": "npx playwright test",
+    "test": "npx playwright test",
     "test:specific": "npx playwright test --grep file-name.spec.js",
     "test:tag": "npx playwright test --grep @tagName",
     "report": "npx playwright show-report"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "playwright",
+    "tdd",
+    "automation",
+    "javascript",
+    "testing",
+    "e2e"
+  ],
+  "author": "Anna Virchenko",
+  "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.56.1",
     "@types/node": "^22.15.24"
