@@ -1,21 +1,16 @@
-import { test } from '@playwright/test';
-
 export class BasePage {
-  static page;
-
+  /**
+   * @param {import('@playwright/test').Page} page
+   */
   constructor(page) {
-    BasePage.page = page; // Optional if you're consistently using static pattern
+    this.page = page;
   }
 
   locator(selector) {
-    return BasePage.page.locator(selector);
+    return this.page.locator(selector);
   }
 
   frameLocator(selector) {
-    return BasePage.page.frameLocator(selector);
-  }
-
-  static setPage(page) {
-    this.page = page;
+    return this.page.frameLocator(selector);
   }
 }
