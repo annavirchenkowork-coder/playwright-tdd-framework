@@ -40,16 +40,11 @@ export const test = base.extend({
 });
 
 export function initPages(page) {
-  const startApplicationPage = new StartApplicationPage(page);
-  const paymentPlanPage = new PaymentPlanPage(page);
-  const reviewPaymentPage = new ReviewPaymentPage(page);
-  const leftMainPage = new LeftMainPage(page);
-
   return {
-    startApplicationPage,
-    paymentPlanPage,
-    reviewPaymentPage,
-    leftMainPage,
+    startApp: new StartApplicationPage(page),
+    paymentPlan: new PaymentPlanPage(page),
+    review: new ReviewPaymentPage(page),
+    leftMain: new LeftMainPage(page),
   };
 }
 export async function goToStep2(page) {
