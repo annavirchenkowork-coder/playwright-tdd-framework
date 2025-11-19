@@ -7,6 +7,7 @@ import { StartApplicationPage } from "../pages/StartApplicationPage.js";
 import { PaymentPlanPage } from "../pages/PaymentPlanPage.js";
 import { ReviewPaymentPage } from "../pages/ReviewPaymentPage.js";
 import { LeftMainPage } from "../pages/LeftMainPage.js";
+import { productInfo } from "./qa-data-reader";
 
 /**
  * Extends the base test with custom UI setup for SEP application.
@@ -38,6 +39,45 @@ export const test = base.extend({
   },
 });
 
+export function initPages(page) {
+  const startApplicationPage = new StartApplicationPage(page);
+  const paymentPlanPage = new PaymentPlanPage(page);
+  const reviewPaymentPage = new ReviewPaymentPage(page);
+  const leftMainPage = new LeftMainPage(page);
+
+  return {
+    startApplicationPage,
+    paymentPlanPage,
+    reviewPaymentPage,
+    leftMainPage,
+  };
+}
+export async function goToStep2(page) {
+  const start = new StartApplicationPage(page);
+
+  // Fill the form
+  await start.enterFirstName(productInfo.firstName);
+  await start.enterLastName(productInfo.lastName);
+  await start.enterEmail(productInfo.email);
+  await start.enterPhoneNumber(productInfo.phone);
+  await start.selectHowDidYouHearAboutUs(productInfo.howDidYouHear);
+
+  await start.clickNextButton();
+  await microSettle(page);
+
+  return new PaymentPlanPage(page);
+}
+
+export async function goToStep3(page) {
+  const paymentPlan = await goToStep2(page);
+
+  await paymentPlan.selectPaymentPlan("upfront");
+  await microSettle(page);
+  await paymentPlan.clickNextButton();
+
+  await microSettle(page);
+  return new ReviewPaymentPage(page);
+}
 // convenient re-exports for tests
 export { expect, test as describe };
 
@@ -352,7 +392,7 @@ export async function microSettle(page, ms = 250) {
 async function takeScreenshotIfFailed(page, testInfo) {
   if (testInfo.status !== "failed") return;
 
-  const screenshotDir = path.join(__dirname, "../screenshots");
+  const screenshotDir = path.join(process.cwd(), "screenshots");
   fs.mkdirSync(screenshotDir, { recursive: true });
 
   const currentDateTime = new Date()
