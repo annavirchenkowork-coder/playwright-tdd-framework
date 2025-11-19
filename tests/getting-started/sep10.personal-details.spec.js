@@ -2,16 +2,12 @@ import {
   test,
   expect,
   BrowserUtility,
+  initPages,
 } from "../../utilities/sep-ui-utilities.js";
-import { StartApplicationPage } from "../../pages/StartApplicationPage.js";
-import { PaymentPlanPage } from "../../pages/PaymentPlanPage.js";
 
-// Small helper: build page objects for each test
-const initPages = (page) => ({
-  startApp: new StartApplicationPage(page),
-  paymentPlan: new PaymentPlanPage(page),
-});
-
+// =========================================================
+// SEP10 - Enter my Personal details
+// =========================================================
 test.describe("SEP10 - Enter my Personal details", () => {
   // =========================================================
   // AC1 – Required fields present & required
@@ -40,7 +36,6 @@ test.describe("SEP10 - Enter my Personal details", () => {
     );
   });
 
-  // Helpers for AC2/AC3/AC5
   const assertFormValid = async (page, expected) => {
     await expect
       .poll(async () => await BrowserUtility.ngFormValid(page), {
@@ -53,7 +48,9 @@ test.describe("SEP10 - Enter my Personal details", () => {
     await expect(paymentPlan.chooseAPaymentPlanText).toBeHidden({
       timeout: 300,
     });
+
     await startApp.clickNextButton();
+
     await expect(startApp.firstNameInputBox).toBeVisible();
     await expect(paymentPlan.chooseAPaymentPlanText).toBeHidden({
       timeout: 300,
@@ -64,9 +61,12 @@ test.describe("SEP10 - Enter my Personal details", () => {
     await expect(paymentPlan.chooseAPaymentPlanText).toBeHidden({
       timeout: 300,
     });
+
     await startApp.clickNextButton();
+
     await expect(paymentPlan.chooseAPaymentPlanText).toBeVisible();
   };
+
   // =========================================================
   // AC2 – Email format validation
   // =========================================================
@@ -99,6 +99,7 @@ test.describe("SEP10 - Enter my Personal details", () => {
       await clickNextShouldStayOnStep1(startApp, paymentPlan);
     });
   }
+
   // =========================================================
   // AC3 – Phone numeric only
   // =========================================================
@@ -137,6 +138,7 @@ test.describe("SEP10 - Enter my Personal details", () => {
       await clickNextShouldStayOnStep1(startApp, paymentPlan);
     });
   }
+
   // =========================================================
   // AC4 – Dropdown options present
   // =========================================================
@@ -169,6 +171,7 @@ test.describe("SEP10 - Enter my Personal details", () => {
       expect(optionTexts).toContain(opt);
     }
   });
+
   // =========================================================
   // AC5 – Next button blocked until valid, then goes to Step 2
   // =========================================================
@@ -197,7 +200,7 @@ test.describe("SEP10 - Enter my Personal details", () => {
       "2025550188"
     );
 
-    // And I select "LinkedIn" in the dropdown
+    // And I select "Email" in the "How did you hear about us?" dropdown
     await startApp.selectHowDidYouHearAboutUs("LinkedIn");
 
     // Then The form should be valid
