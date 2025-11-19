@@ -10,8 +10,9 @@ test.describe("SEP09 - Display product information @sep09", () => {
     startApp: new StartApplicationPage(page),
     left: new LeftMainPage(page),
   });
-
-  // AC1
+  // =========================================================
+  // AC1 –
+  // =========================================================
   test("AC1 - Product name visible on information card @sep09-1", async ({
     page,
   }) => {
@@ -20,7 +21,9 @@ test.describe("SEP09 - Display product information @sep09", () => {
     await expect(startApp.programNameOnInfoCard).toBeVisible();
   });
 
-  // AC2
+  // =========================================================
+  // AC2 –
+  // =========================================================
   test("AC2 - Product name matches left header @sep09-2", async ({ page }) => {
     const { startApp } = initPages(page);
 
@@ -28,8 +31,9 @@ test.describe("SEP09 - Display product information @sep09", () => {
       new RegExp(`^\\s*${qaData.productName}\\s*$`, "i")
     );
   });
-
-  // AC3
+  // =========================================================
+  // AC3 –
+  // =========================================================
   test("AC3 - Discounted/original price display is correct @sep09-3", async ({
     page,
   }) => {
@@ -58,8 +62,9 @@ test.describe("SEP09 - Display product information @sep09", () => {
     expect(original).toBe(expectedOriginal);
     expect(discounted).toBe(expectedDiscounted);
   });
-
-  // AC4
+  // =========================================================
+  // AC4 –
+  // =========================================================
   test("AC4 - Flexible payments plan text visible @sep09-4", async ({
     page,
   }) => {
@@ -70,8 +75,10 @@ test.describe("SEP09 - Display product information @sep09", () => {
       /flexible payments plan available/i
     );
   });
+  // =========================================================
+  // AC5 –
+  // =========================================================
 
-  // AC5
   test("AC5 - Program start date visible & matches test data @sep09-5", async ({
     page,
   }) => {
@@ -84,8 +91,9 @@ test.describe("SEP09 - Display product information @sep09", () => {
       new RegExp(dateEscaped, "i")
     );
   });
-
-  // AC6
+  // =========================================================
+  // AC6 –
+  // =========================================================
   test("AC6 - Refund policy text & date visible @sep09-6", async ({ page }) => {
     const { startApp } = initPages(page);
 

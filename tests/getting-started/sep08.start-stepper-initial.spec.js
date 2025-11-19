@@ -21,14 +21,16 @@ test.describe("Start Application - initial checkout stepper state", () => {
     page,
   }) => {
     const startApplicationPage = new StartApplicationPage(page);
-
+    // =========================================================
     // AC2: Start Application step is active (blue)
+    // =========================================================
     await expect(startApplicationPage.startApplicationStepCircle).toHaveCSS(
       "background-color",
       ACTIVE_BLUE
     );
-
+    // =========================================================
     // AC3: Payment Plan + Review steps are inactive (grey)
+    // =========================================================
     const inactiveSteps = [
       startApplicationPage.paymentPlanStepCircle,
       startApplicationPage.reviewStepCircle,
