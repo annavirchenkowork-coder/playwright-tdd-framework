@@ -125,7 +125,7 @@ export const defaultEnrollmentData = {
   lastName: "Virchenko",
   email: "anna.virchenko@example.com",
   phone: "5551234567",
-  howDidYouHear: "LinkedIn",
+  howDidYouHear: "Email",
   startDate: qaData.startDate,
   refundDate: qaData.refundDate,
 };
