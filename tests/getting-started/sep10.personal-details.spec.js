@@ -201,7 +201,7 @@ test.describe("SEP10 - Enter my Personal details", () => {
     );
 
     // And I select "Email" in the "How did you hear about us?" dropdown
-    await startApp.selectHowDidYouHearAboutUs("LinkedIn");
+    await startApp.selectHowDidYouHearAboutUs("Email");
 
     // Then The form should be valid
     await assertFormValid(page, true);
