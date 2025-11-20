@@ -2,12 +2,17 @@ import { test, expect } from "../../utilities/sep-ui-utilities.js";
 import { generateTestUser } from "../../utilities/qa-data-reader.js";
 import { StartApplicationPage } from "../../pages/StartApplicationPage.js";
 
-test.describe("Start Application - Stepper indicators", () => {
-  test("User enters valid data in all required and optional fields", async ({
+// =========================================================
+// SEP19 - Proceed to Step 2 after completing Step 1
+// =========================================================
+test.describe("SEP19 - Start Application - Stepper indicators @sep19", () => {
+  // =========================================================
+  // Validate with all fields completed (required + optional)
+  // =========================================================
+  test("User enters valid data in all required and optional fields @sep19-1", async ({
     page,
   }) => {
     const startApplicationPage = new StartApplicationPage(page);
-
     // Step 1: Enter all valid information
     const user = generateTestUser();
     await startApplicationPage.fillPersonalInformation(user);
@@ -26,8 +31,12 @@ test.describe("Start Application - Stepper indicators", () => {
       "rgb(1, 201, 255)" // active blue
     );
   });
-
-  test("User enters valid data only in required fields", async ({ page }) => {
+  // =========================================================
+  // Validate with only required fields completed
+  // =========================================================
+  test("User enters valid data only in required fields @sep19-2", async ({
+    page,
+  }) => {
     const startApplicationPage = new StartApplicationPage(page);
 
     // Step 1: Enter only required fields
