@@ -1,17 +1,14 @@
-import { test, expect } from "../../utilities/sep-ui-utilities.js";
-import { StartApplicationPage } from "../../pages/StartApplicationPage.js";
-import { LeftMainPage } from "../../pages/LeftMainPage.js";
+import {
+  test,
+  expect,
+  BrowserUtility,
+  initPages,
+} from "../../utilities/sep-ui-utilities.js";
 import { qaData } from "../../utilities/qa-data-reader.js";
-import { BrowserUtility } from "../../utilities/sep-ui-utilities.js";
 
 test.describe("SEP09 - Display product information @sep09", () => {
-  // Helper to get both pages quickly
-  const initPages = (page) => ({
-    startApp: new StartApplicationPage(page),
-    left: new LeftMainPage(page),
-  });
   // =========================================================
-  // AC1 –
+  // AC1 – Product name visible on info card
   // =========================================================
   test("AC1 - Product name visible on information card @sep09-1", async ({
     page,
@@ -22,7 +19,7 @@ test.describe("SEP09 - Display product information @sep09", () => {
   });
 
   // =========================================================
-  // AC2 –
+  // AC2 – Product name matches left header / expected value
   // =========================================================
   test("AC2 - Product name matches left header @sep09-2", async ({ page }) => {
     const { startApp } = initPages(page);
@@ -31,19 +28,23 @@ test.describe("SEP09 - Display product information @sep09", () => {
       new RegExp(`^\\s*${qaData.productName}\\s*$`, "i")
     );
   });
+
   // =========================================================
-  // AC3 –
+  // AC3 – Discounted/original price relationship
   // =========================================================
   test("AC3 - Discounted/original price display is correct @sep09-3", async ({
     page,
   }) => {
     const { startApp } = initPages(page);
 
+    // Discounted price visible
     await expect(startApp.discountedPrice).toBeVisible();
 
+    // Original price has strikethrough (<s> tag)
     const tag = await startApp.originalPrice.evaluate((el) => el.tagName);
     expect(tag).toBe("S");
 
+    // Compare values with qaData
     const oneTime = qaData.prices.find(
       (p) => p.active && p.type === "one-time"
     );
@@ -62,8 +63,9 @@ test.describe("SEP09 - Display product information @sep09", () => {
     expect(original).toBe(expectedOriginal);
     expect(discounted).toBe(expectedDiscounted);
   });
+
   // =========================================================
-  // AC4 –
+  // AC4 – Flexible payments text
   // =========================================================
   test("AC4 - Flexible payments plan text visible @sep09-4", async ({
     page,
@@ -75,24 +77,26 @@ test.describe("SEP09 - Display product information @sep09", () => {
       /flexible payments plan available/i
     );
   });
-  // =========================================================
-  // AC5 –
-  // =========================================================
 
+  // =========================================================
+  // AC5 – Program start date visible & matches qaData
+  // =========================================================
   test("AC5 - Program start date visible & matches test data @sep09-5", async ({
     page,
   }) => {
     const { startApp } = initPages(page);
 
     await expect(startApp.programStartDate).toBeVisible();
+
     const dateEscaped = qaData.startDate.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     await expect(startApp.programStartDate).toHaveText(
       new RegExp(dateEscaped, "i")
     );
   });
+
   // =========================================================
-  // AC6 –
+  // AC6 – Refund policy / date visible
   // =========================================================
   test("AC6 - Refund policy text & date visible @sep09-6", async ({ page }) => {
     const { startApp } = initPages(page);
