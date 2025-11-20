@@ -7,7 +7,7 @@ import { StartApplicationPage } from "../pages/StartApplicationPage.js";
 import { PaymentPlanPage } from "../pages/PaymentPlanPage.js";
 import { ReviewPaymentPage } from "../pages/ReviewPaymentPage.js";
 import { LeftMainPage } from "../pages/LeftMainPage.js";
-import { productInfo } from "./qa-data-reader";
+import { defaultEnrollmentData } from "./qa-data-reader";
 
 /**
  * Extends the base test with custom UI setup for SEP application.
@@ -48,19 +48,21 @@ export function initPages(page) {
   };
 }
 export async function goToStep2(page) {
-  const start = new StartApplicationPage(page);
+  const { startApp, paymentPlan } = initPages(page);
+  const d = defaultEnrollmentData;
 
-  // Fill the form
-  await start.enterFirstName(productInfo.firstName);
-  await start.enterLastName(productInfo.lastName);
-  await start.enterEmail(productInfo.email);
-  await start.enterPhoneNumber(productInfo.phone);
-  await start.selectHowDidYouHearAboutUs(productInfo.howDidYouHear);
+  await startApp.enterFirstName(d.firstName);
+  await startApp.enterLastName(d.lastName);
+  await startApp.enterEmail(d.email);
+  await startApp.enterPhoneNumber(d.phone);
+  await startApp.selectHowDidYouHearAboutUs(d.howDidYouHear);
 
-  await start.clickNextButton();
+  await startApp.clickNextButton();
   await microSettle(page);
 
-  return new PaymentPlanPage(page);
+  await expect(paymentPlan.chooseAPaymentPlanText).toBeVisible();
+
+  return { startApp, paymentPlan };
 }
 
 export async function goToStep3(page) {
