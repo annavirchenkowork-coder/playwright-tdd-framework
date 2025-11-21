@@ -107,4 +107,42 @@ test.describe("SEP23 - Make a payment with a valid card @sep23", () => {
     // Optional: still on the review page – we don't assert confirmationBox here
     await expect(review.cardNumberErrorMessage).toBeVisible();
   });
+
+  // =======================================================
+  // NEG3 – Invalid ZIP: inline error + alert, no trust in success box
+  // =======================================================
+  test("NEG3 - Invalid ZIP shows error & 'Something went wrong' alert @sep23-3", async ({
+    page,
+  }) => {
+    const review = await goToStep3(page);
+
+    // Valid card / expiry / CVC
+    await review.enterCardNumber("4242 4242 4242 4242");
+    await review.enterExpiryDate("12/40");
+    await review.enterCVC("123");
+
+    // Intentionally bad ZIP
+    await review.enterZipCode("000");
+    await review.clickTermsAndConditionsCheckbox();
+
+    await microSettle(page, 300);
+
+    // ZIP inline error
+    await expect(review.cardZipErrorMessage).toBeVisible();
+    await expect(review.cardZipErrorMessage).toContainText(
+      "Your ZIP is invalid",
+      { ignoreCase: true }
+    );
+
+    // Pay still clickable & clicking shows the alert
+    const dialogPromise = page.waitForEvent("dialog");
+    await review.clickPayButton();
+
+    const dialog = await dialogPromise;
+    expect(dialog.message()).toContain("Something went wrong");
+    await dialog.accept();
+
+    // And error is still there after the alert
+    await expect(review.cardZipErrorMessage).toBeVisible();
+  });
 });

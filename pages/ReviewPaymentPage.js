@@ -106,7 +106,7 @@ export class ReviewPaymentPage extends BasePage {
 
     /** @type {import('@playwright/test').Locator} */
     this.cardNumberErrorMessage = this.paymentFrame.locator(
-      "//p[@id='Field-numberError' and @class='p-FieldError Error' and @role='alert']"
+      "//p[@id='Field-numberError' and @role='alert']"
     );
 
     /** @type {import('@playwright/test').Locator} */
