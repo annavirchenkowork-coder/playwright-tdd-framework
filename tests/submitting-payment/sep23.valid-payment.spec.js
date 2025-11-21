@@ -41,4 +41,25 @@ test.describe("SEP23 - Make a payment with a valid card @sep23", () => {
     await expect(review.step2Container).toHaveClass(/done/);
     await expect(review.step3Container).toHaveClass(/editing|done/);
   });
+
+  // =========================================================
+  // SEP23 – Negative: User cannot pay without accepting Terms
+  // =========================================================
+  test("NEG1 - Pay button stays disabled if Terms are not accepted @sep23-neg1", async ({
+    page,
+  }) => {
+    const review = await goToStep3(page);
+
+    // Fill all valid Stripe fields
+    await review.enterCardNumber("4242 4242 4242 4242");
+    await review.enterExpiryDate("12/40");
+    await review.enterCVC("123");
+    await review.enterZipCode("12345");
+
+    // DO NOT check the checkbox
+    // review.clickTermsAndConditionsCheckbox(); // intentionally skipped
+
+    // User should NOT be able to click Pay
+    await expect(review.payButton).toBeDisabled();
+  });
 });
