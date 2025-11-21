@@ -30,6 +30,14 @@ export class PaymentPlanPage extends BasePage {
       "(//mat-expansion-panel-header[@role='button'])[1]"
     );
 
+    this.upfrontPanelContent = this.locator(
+      "(//mat-expansion-panel)[1]//div[contains(@class,'mat-expansion-panel-content')]"
+    );
+
+    this.installmentsPanelContent = this.locator(
+      "(//mat-expansion-panel)[2]//div[contains(@class,'mat-expansion-panel-content')]"
+    );
+    
     /** @type {import('@playwright/test').Locator} */
     this.greenBadgeUpfrontDiscount = this.locator(
       "//span[@class='chip-content']"
@@ -176,11 +184,13 @@ export class PaymentPlanPage extends BasePage {
     );
 
     /** @type {import('@playwright/test').Locator} */
-    this.inactiveNextButton = this.locator("//button[text()='Next']");
+    this.inactiveNextButton = this.locator(
+      "//button[text()='Next' and @disabled]"
+    );
 
     /** @type {import('@playwright/test').Locator} */
     this.activeNextButton = this.locator(
-      "//button[@class = 'next-button' and text()='Next']"
+      "//button[@class='next-button' and text()='Next']"
     );
 
     /** @type {import('@playwright/test').Locator} */
