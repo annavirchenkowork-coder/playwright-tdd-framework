@@ -66,7 +66,7 @@ export async function goToStep2(page) {
 }
 
 export async function goToStep3(page) {
-  const paymentPlan = await goToStep2(page);
+  const { paymentPlan } = await goToStep2(page);
 
   await paymentPlan.selectPaymentPlan("upfront");
   await microSettle(page);
@@ -75,6 +75,7 @@ export async function goToStep3(page) {
   await microSettle(page);
   return new ReviewPaymentPage(page);
 }
+
 // convenient re-exports for tests
 export { expect, test as describe };
 
