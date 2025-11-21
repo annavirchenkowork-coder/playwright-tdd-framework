@@ -9,6 +9,9 @@ import {
 // SEP23 – Make a payment with a valid card
 // =========================================================
 test.describe("SEP23 - Make a payment with a valid card @sep23", () => {
+  // =======================================================
+  // AC1 – Happy path: successful payment
+  // =======================================================
   test("AC1 - Successful payment with a valid test card @sep23-1", async ({
     page,
   }) => {
@@ -43,7 +46,7 @@ test.describe("SEP23 - Make a payment with a valid card @sep23", () => {
   });
 
   // =========================================================
-  // SEP23 – Negative: User cannot pay without accepting Terms
+  // NEG1 – Pay button stays disabled if Terms are not accepted
   // =========================================================
   test("NEG1 - Pay button stays disabled if Terms are not accepted @sep23-neg1", async ({
     page,
@@ -57,9 +60,51 @@ test.describe("SEP23 - Make a payment with a valid card @sep23", () => {
     await review.enterZipCode("12345");
 
     // DO NOT check the checkbox
-    // review.clickTermsAndConditionsCheckbox(); // intentionally skipped
 
+    // Give UI a moment to settle
+    await microSettle(page, 300);
     // User should NOT be able to click Pay
     await expect(review.payButton).toBeDisabled();
+  });
+
+  // =======================================================
+  // NEG2 – Invalid card number: inline error + alert, no trust in success box
+  // =======================================================
+  test("NEG2 - Invalid card number shows error & 'Something went wrong' alert @sep23-2", async ({
+    page,
+  }) => {
+    const review = await goToStep3(page);
+
+    // Invalid card number
+    await review.enterCardNumber("4242 4242 4242 4246");
+
+    // Other fields valid
+    await review.enterExpiryDate("12/40");
+    await review.enterCVC("123");
+    await review.enterZipCode("12345");
+
+    // Accept Terms
+    await review.clickTermsAndConditionsCheckbox();
+
+    // Let Stripe validate and render inline error
+    await microSettle(page, 300);
+
+    // Inline card error should be shown
+    await expect(review.cardNumberErrorMessage).toBeVisible();
+    await expect(review.cardNumberErrorMessage).toContainText(
+      "Your card number is invalid",
+      { ignoreCase: true }
+    );
+
+    // When clicking Pay, a browser alert with "Something went wrong" should appear
+    const dialogPromise = page.waitForEvent("dialog");
+    await review.clickPayButton();
+
+    const dialog = await dialogPromise;
+    expect(dialog.message()).toContain("Something went wrong");
+    await dialog.accept();
+
+    // Optional: still on the review page – we don't assert confirmationBox here
+    await expect(review.cardNumberErrorMessage).toBeVisible();
   });
 });

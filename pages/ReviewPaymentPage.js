@@ -120,7 +120,7 @@ export class ReviewPaymentPage extends BasePage {
     );
 
     /** @type {import('@playwright/test').Locator} */
-    this.zipCodeErrorMessage = this.paymentFrame.locator(
+    this.cardZipErrorMessage = this.paymentFrame.locator(
       "//p[@id='Field-postalCodeError' and @class='p-FieldError Error' and @role='alert']"
     );
 
@@ -148,6 +148,11 @@ export class ReviewPaymentPage extends BasePage {
     /** @type {import('@playwright/test').Locator} */
     this.confirmationBox = this.locator(
       "//div[contains(., 'Payments confirmation')][contains(@class,'ng-star-inserted')]"
+    );
+
+    /** Confirmation box (success message only) */
+    this.confirmationBoxSeccess = this.locator(
+      "//div[contains(@class,'success-container') or contains(., 'Payment successful')]"
     );
 
     // Stepper states on Review page
