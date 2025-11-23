@@ -28,8 +28,12 @@ The goal is to showcase strong *testing architecture*, solid *TDD practices*, an
 2. [Environment Setup](#environment-setup)
 3. [How to Run Tests](#how-to-run-tests)
 4. [Project Structure](#project-structure)
-5. [TDD Workflow for Adding New Tests](#tdd-workflow-for-adding-new-tests)
-6. [Git Workflow](#git-workflow)<br>
+5. [Feature Coverage Map](#-feature-coverage-map)
+6. [TDD Workflow for Adding New Tests](#-tdd-workflow-for-adding-new-tests)
+7. [Why TDD?](#-why-tdd)
+8. [Supported Test Types](#-supported-test-types)
+9. [Supported Browsers](#-supported-browsers)
+10. [Git Workflow](#git-workflow)<br>
 
 ## ⚙️ Prerequisites
 
