@@ -145,6 +145,7 @@ Below is the full list of **implemented features**, grouped by functional area:
 | **SEP14 – Payment plan selection** | Selecting upfront vs installments |
 | **SEP16 – Payment plan: Next button behavior** | Ensures user cannot proceed without selection |
 | **SEP17 – Payment plan display** | Validates plan card UI, labels, and pricing |
+| **SEP18 – Payment plan summary from qa_data.json** | Verifies base price, discounts, installments, and per-month amounts match test data |
 
 ---
 
